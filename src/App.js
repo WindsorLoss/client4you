@@ -9,9 +9,9 @@ import { GlobalStyle } from "./styles/global";
 export function App() {
   return (
     <>
-      <Navbar />
 
       <Router>
+        <Navbar />
         <Route path="/" exact component={ClientList}/>
         <Route path="/create" component={CreateClient}/>
       </Router>

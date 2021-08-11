@@ -1,6 +1,11 @@
+import { useHistory } from 'react-router-dom'
+
 import { Container } from "./styles";
 
 export function Navbar() {
+
+    const history = useHistory()
+    
     return (
         <Container>
             <nav>
@@ -9,8 +14,8 @@ export function Navbar() {
                 </div>
 
                 <div>
-                    <button>Novo cliente</button>
-                    <button>Listar clientes</button>
+                    <button onClick={() => history.push('/')}>Novo cliente</button>
+                    <button onClick={() => history.push('/create')}>Listar clientes</button>
                 </div>
             </nav>
         </Container>
