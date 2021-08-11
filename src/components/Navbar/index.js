@@ -14,8 +14,8 @@ export function Navbar() {
                 </div>
 
                 <div>
-                    <button onClick={() => history.push('/create')}>Novo cliente</button>
                     <button onClick={() => history.push('/')}>Listar clientes</button>
+                    <button onClick={() => history.push('/create')}>Novo cliente</button>
                 </div>
             </nav>
         </Container>
