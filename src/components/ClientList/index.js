@@ -7,8 +7,9 @@ import axios from 'axios';
 export function ClientList() {
 
     const [clientList, setClientList] = useState([])
-
+    
     useEffect(() => {
+
         axios.post('https://graphql.datocms.com/', {
                 "query" : `query {
                     allClients {
@@ -28,9 +29,10 @@ export function ClientList() {
             }
         ).then(res => {
             const list = res.data.data.allClients
-            setClientList(...clientList, list)
+            setClientList(c => [].concat(c, list))
         })
-    },[])
+    }, [])
+
 
     return (
         <Container>
