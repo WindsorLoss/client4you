@@ -9,6 +9,7 @@ export const GlobalStyle = createGlobalStyle`
         --shape-color: #FFF;
         --navbar: #7E51DE;
         --button-hover: #9461FF;     
+        --table-header: #b9b9b9;
 
     }
 
