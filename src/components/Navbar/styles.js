@@ -46,6 +46,10 @@ export const Container = styled.div`
             &:hover {
                 background: var(--button-hover);
             }
+
+            &:active {
+                transform: translateY(4px);
+            }
         }
     }
 `
