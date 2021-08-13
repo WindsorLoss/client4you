@@ -2,11 +2,35 @@ import React, { useEffect, useState } from 'react'
 import { Container } from './styles'
 import { FiSearch, FiTrash2 } from "react-icons/fi";
 import { FaRegEdit } from "react-icons/fa";
+
+import { deleteClient } from '../../api/api'
+
 import axios from 'axios';
 
 export function ClientList() {
 
     const [clientList, setClientList] = useState([])
+    const [searchWord, setSearchWord] = useState('')
+    const [searchResult, setSearchResult] = useState([])
+
+    function handleSearch(text) {
+        const result = clientList.filter(client => {
+            return  client.name.includes(text)  || 
+                    client.cpf.includes(text)   ||
+                    client.phone.includes(text)   ||
+                    client.birthday.includes(text)
+        })
+        
+        console.log(result)
+
+        result.length === 0 ? console.log('nenhum resultado encontrado') :
+        setSearchResult(result)
+    }
+
+    function handleDeleteClient(id) {
+        setClientList(clientList.filter(client => client.id !== id))
+        deleteClient(id)
+    }
     
     useEffect(() => {
 
@@ -33,6 +57,7 @@ export function ClientList() {
         })
     }, [])
 
+    useEffect(() => searchWord === '' && setSearchResult([]), [searchWord])
 
     return (
         <Container>
@@ -45,7 +70,14 @@ export function ClientList() {
 
                     <div className='search-input'>
                         <FiSearch size={'1.6rem'}/>    
-                        <input placeholder='Pesquisar cliente'/>
+                        <input 
+                            placeholder='Pesquisar cliente'
+                            value={searchWord}
+                            onChange={(e) => {
+                                setSearchWord(e.target.value)
+                                handleSearch(searchWord)
+                            }}
+                        />
                     </div>
 
                     <table>
@@ -61,7 +93,8 @@ export function ClientList() {
 
                         <tbody>
                             {
-                                clientList.map(client => {
+                                searchResult.length === 0 
+                                ? clientList.map(client => {
                                     return (
                                         <tr key={client.id}>
                                             <td>{client.name}</td>
@@ -70,7 +103,25 @@ export function ClientList() {
                                             <td>{client.birthday}</td>
                                             <td>
                                                 <button><FaRegEdit size='1.3rem'/></button>
-                                                <button><FiTrash2 size='1.3rem'/></button>
+                                                <button onClick={() => handleDeleteClient(client.id)}>
+                                                    <FiTrash2 size='1.3rem'/>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    )
+                                })
+                                : searchResult.map(client => {
+                                    return (
+                                        <tr key={client.id}>
+                                            <td>{client.name}</td>
+                                            <td>{client.cpf}</td>
+                                            <td>{client.phone}</td>
+                                            <td>{client.birthday}</td>
+                                            <td>
+                                                <button><FaRegEdit size='1.3rem'/></button>
+                                                <button onClick={() => handleDeleteClient(client.id)}>
+                                                    <FiTrash2 size='1.3rem'/>
+                                                </button>
                                             </td>
                                         </tr>
                                     )
