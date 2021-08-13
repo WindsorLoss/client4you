@@ -61,8 +61,8 @@ export function ClientList() {
         <Container>
 
             {
-                clientList.length !== 0 &&
-                <div>
+                clientList.length !== 0 
+                ? <div>
 
                     <h1>Todos os clientes</h1>
 
@@ -129,6 +129,7 @@ export function ClientList() {
                     </table>
                 </div>
                 
+                : <h1>Nenhum cliente cadastrado</h1>
             }
         </Container>
     )
