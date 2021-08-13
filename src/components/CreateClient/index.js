@@ -1,6 +1,7 @@
-import { SiteClient } from 'datocms-client'
 import React, { useState } from 'react'
 import { Container } from './styles'
+
+import { newClient } from '../../api/api'
 
 export function CreateClient() {
 
@@ -8,16 +9,6 @@ export function CreateClient() {
     const [cpf, setCpf] = useState('')
     const [phone, setPhone] = useState('')
     const [birthday, setBirthday] = useState('')
-
-    async function createNewClient(data){
-
-        const client = new SiteClient('d64a915d638c61aeecb502b7a9b36c')
-
-        await client.items.create({
-            itemType: '1067019',
-            ...data
-        })
-    }
 
     function handleSubmit(e) {
         e.preventDefault()
@@ -29,7 +20,7 @@ export function CreateClient() {
             birthday
         }
 
-        createNewClient(data)
+        newClient(data)
 
         setName('')
         setCpf('')
@@ -38,6 +29,7 @@ export function CreateClient() {
     }
 
     return (
+        
         <Container>
             <h1>Cadastrar novo cliente</h1>
 
