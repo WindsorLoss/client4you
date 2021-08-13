@@ -42,11 +42,16 @@ export const Container = styled.div`
             border-radius: 15px;
             outline: 0;
 
-            height: 35px;
+            height: 40px;
 
             font-size: 1rem;
 
             padding-left: 15px;
+
+            &:focus{
+                border-radius: 15px 15px 0 0;
+                border-bottom: 2px solid var(--navbar);
+            }
         }
 
         button {
@@ -94,4 +99,10 @@ export const Container = styled.div`
         }
     }
 
+    .empty-fields {
+        input {
+            border-radius: 15px 15px 0 0;
+            border-bottom: 1px solid red
+        }
+    }
 `
