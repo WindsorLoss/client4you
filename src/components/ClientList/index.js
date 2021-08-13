@@ -29,7 +29,7 @@ export function ClientList() {
             }
         ).then(res => {
             const list = res.data.data.allClients
-            setClientList(c => [].concat(c, list))
+            setClientList(list)
         })
     }, [])
 
@@ -60,27 +60,6 @@ export function ClientList() {
                         </thead>
 
                         <tbody>
-                            <tr>
-                                <td>Windsor Lóss</td>
-                                <td>123.456.789-11</td>
-                                <td>(28) 99947-1476</td>
-                                <td>27/12/2000</td>
-                                <td>
-                                    <button><FaRegEdit size='1.3rem'/></button>
-                                    <button><FiTrash2 size='1.3rem'/></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Windsor Lóss</td>
-                                <td>123.456.789-11</td>
-                                <td>(28) 99947-1476</td>
-                                <td>27/12/2000</td>
-                                <td>
-                                    <button><FaRegEdit size='1.3rem'/></button>
-                                    <button><FiTrash2 size='1.3rem'/></button>
-                                </td>
-                            </tr>
-
                             {
                                 clientList.map(client => {
                                     return (
