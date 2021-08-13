@@ -64,6 +64,16 @@ export const Container = styled.div`
             margin-top: 20px;
 
             width: 250px;
+
+            transition: transform 0.1s;
+
+            &:hover{
+                transform: translateY(-1px);
+            }
+
+            &:active {
+                transform: translateY(4px);
+            }
         }
     }
 
