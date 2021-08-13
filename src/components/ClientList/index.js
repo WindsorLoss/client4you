@@ -15,14 +15,12 @@ export function ClientList() {
 
     function handleSearch(text) {
         const result = clientList.filter(client => {
-            return  client.name.includes(text)  || 
-                    client.cpf.includes(text)   ||
-                    client.phone.includes(text)   ||
-                    client.birthday.includes(text)
+            return  client.name.toLowerCase().includes(text)  || 
+                    client.cpf.toLowerCase().includes(text)   ||
+                    client.phone.toLowerCase().includes(text)   ||
+                    client.birthday.toLowerCase().includes(text)
         })
         
-        console.log(result)
-
         result.length === 0 ? console.log('nenhum resultado encontrado') :
         setSearchResult(result)
     }
@@ -75,7 +73,7 @@ export function ClientList() {
                             value={searchWord}
                             onChange={(e) => {
                                 setSearchWord(e.target.value)
-                                handleSearch(searchWord)
+                                handleSearch(searchWord.toLowerCase())
                             }}
                         />
                     </div>
