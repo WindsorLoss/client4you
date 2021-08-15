@@ -6,12 +6,16 @@ import { FaRegEdit } from "react-icons/fa";
 import { deleteClient } from '../../api/api'
 
 import axios from 'axios';
+import { Modal } from '../Modal';
 
 export function ClientList() {
 
     const [clientList, setClientList] = useState([])
     const [searchWord, setSearchWord] = useState('')
     const [searchResult, setSearchResult] = useState([])
+
+    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [editingClient, setEditingClient] = useState({})
 
     function handleSearch(text) {
         const result = clientList.filter(client => {
@@ -21,13 +25,32 @@ export function ClientList() {
                     client.birthday.toLowerCase().includes(text)
         })
         
-        result.length === 0 ? console.log('nenhum resultado encontrado') :
-        setSearchResult(result)
+        result.length === 0 
+        ? console.log('nenhum resultado encontrado') 
+        : setSearchResult(result)
+
+        console.log(result)
     }
 
     function handleDeleteClient(id) {
         setClientList(clientList.filter(client => client.id !== id))
+        setClientList(searchResult.filter(client => client.id !== id))
         deleteClient(id)
+    }
+    
+    function handleEdit(id) {
+        setIsModalOpen(true)
+        setEditingClient(clientList.filter(client => client.id === id)[0])
+    }
+
+    function onClientChange(id, name, cpf, phone, birthday){
+        setEditingClient({
+            id,
+            name,
+            cpf,
+            phone,
+            birthday
+        })
     }
     
     useEffect(() => {
@@ -100,7 +123,9 @@ export function ClientList() {
                                             <td>{client.phone}</td>
                                             <td>{client.birthday}</td>
                                             <td>
-                                                <button><FaRegEdit size='1.3rem'/></button>
+                                                <button onClick={() => handleEdit(client.id)}>
+                                                    <FaRegEdit size='1.3rem'/>
+                                                </button>
                                                 <button onClick={() => handleDeleteClient(client.id)}>
                                                     <FiTrash2 size='1.3rem'/>
                                                 </button>
@@ -131,6 +156,70 @@ export function ClientList() {
                 
                 : <h1>Nenhum cliente cadastrado</h1>
             }
+
+            {
+                isModalOpen && 
+                <Modal 
+                    onClose={() => setIsModalOpen(false)}
+                >
+                    <form>
+                        <label>Nome</label>
+                        <input 
+                            placeholder="nome"
+                            value={editingClient.name}
+                            onChange={(e) => {onClientChange(
+                                    editingClient.id, 
+                                    e.target.value,
+                                    editingClient.cpf,
+                                    editingClient.phone,
+                                    editingClient.birthday
+                                )}}
+                        />
+
+                        <label>CPF</label>
+                        <input 
+                            placeholder="cpf"
+                            value={editingClient.cpf}
+                            onChange={(e) => {onClientChange(
+                                editingClient.id, 
+                                editingClient.name,
+                                e.target.value,
+                                editingClient.phone,
+                                editingClient.birthday
+                            )}}
+                        />
+
+                        <label>Telefone</label>
+                        <input 
+                            placeholder="telefone"
+                            value={editingClient.phone}
+                            onChange={(e) => {onClientChange(
+                                editingClient.id, 
+                                editingClient.name,                                
+                                editingClient.cpf,
+                                e.target.value,
+                                editingClient.birthday
+                            )}}
+                        />
+                        
+                        <label>Data de nascimento</label>
+                        <input 
+                            placeholder="data de nascimento"
+                            value={editingClient.birthday}
+                            onChange={(e) => {onClientChange(
+                                editingClient.id, 
+                                editingClient.name, 
+                                editingClient.cpf,
+                                editingClient.phone,
+                                e.target.value,
+                            )}}
+                        />
+
+                        <button>Salvar</button>
+                    </form>
+                </Modal>
+            }
+
         </Container>
     )
 }

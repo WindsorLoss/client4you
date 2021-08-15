@@ -62,8 +62,7 @@ export const Container = styled.div`
 
             font-size: 1.1rem;
 
-            padding: 1rem;
-            padding-bottom: 1.3rem;
+            padding: 1rem 1rem 1.3rem 1rem;
             
 
             &:first-child {
@@ -90,6 +89,74 @@ export const Container = styled.div`
 
             &:hover{
                 transform: translateY(-1px);
+            }
+
+            &:active {
+                transform: translateY(4px);
+            }
+        }
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        
+        height: 100%;
+        width: 100%;
+        /* background: red; */
+
+        justify-content: center;
+        align-items: center;
+
+        label{
+            align-self: flex-start;
+            padding-left: 0.6rem;
+
+            font-size: 1.3rem;
+
+            margin-top: 10px;
+
+            /* & + input {
+                margin-bottom: 10px;
+            } */
+        }
+
+        input {
+            margin-top: 5px;
+            padding: 0.8rem;
+
+            width: 100%;
+
+            border-radius: 15px;
+            border: 0;
+            outline: 0;
+
+            font-size: 1rem;
+
+            background: var(--background);
+
+            &:focus {
+                border-bottom: 2px solid var(--navbar);
+                border-radius: 15px 15px 0 0;
+            }
+        }
+
+        button {
+            padding: 0.5rem 0.8rem;
+            margin-top: 20px;
+
+            font-size: 1.3rem;
+
+            border: 0;
+            border-radius: 15px;
+
+            color: white;
+            background: var(--navbar);
+
+            transition: all 0.2s;
+
+            &:hover {
+                background: var(--button-hover)
             }
 
             &:active {
