@@ -34,7 +34,7 @@ export function ClientList() {
 
     function handleDeleteClient(id) {
         setClientList(clientList.filter(client => client.id !== id))
-        setClientList(searchResult.filter(client => client.id !== id))
+        setSearchResult(searchResult.filter(client => client.id !== id))
         deleteClient(id)
     }
     
