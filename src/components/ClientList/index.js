@@ -3,7 +3,7 @@ import { Container } from './styles'
 import { FiSearch, FiTrash2 } from "react-icons/fi";
 import { FaRegEdit } from "react-icons/fa";
 
-import { deleteClient } from '../../api/api'
+import { deleteClient, updateClient } from '../../api/api'
 
 import axios from 'axios';
 import { Modal } from '../Modal';
@@ -51,6 +51,27 @@ export function ClientList() {
             phone,
             birthday
         })
+    }
+
+    function handleSubmitUpdate(e) {
+        e.preventDefault()
+
+        const formData = new FormData(e.target)
+
+        const data = {
+            name: formData.get('name'),
+            cpf: formData.get('cpf'),
+            phone: formData.get('phone'),
+            birthday: formData.get('birthday')
+        }
+
+        updateClient(editingClient.id, data)
+
+        setClientList(clientList.map(client => client.id === editingClient.id ? data : client))
+        setSearchResult(searchResult.map(client => client.id === editingClient.id ? data : client))
+
+        setIsModalOpen(false)
+        setEditingClient({})
     }
     
     useEffect(() => {
@@ -141,7 +162,9 @@ export function ClientList() {
                                             <td>{client.phone}</td>
                                             <td>{client.birthday}</td>
                                             <td>
-                                                <button><FaRegEdit size='1.3rem'/></button>
+                                                <button onClick={() => handleEdit(client.id)}>
+                                                    <FaRegEdit size='1.3rem'/>
+                                                </button>
                                                 <button onClick={() => handleDeleteClient(client.id)}>
                                                     <FiTrash2 size='1.3rem'/>
                                                 </button>
@@ -162,11 +185,12 @@ export function ClientList() {
                 <Modal 
                     onClose={() => setIsModalOpen(false)}
                 >
-                    <form>
+                    <form onSubmit={handleSubmitUpdate}>
                         <label>Nome</label>
                         <input 
                             placeholder="nome"
                             value={editingClient.name}
+                            name='name'
                             onChange={(e) => {onClientChange(
                                     editingClient.id, 
                                     e.target.value,
@@ -180,6 +204,7 @@ export function ClientList() {
                         <input 
                             placeholder="cpf"
                             value={editingClient.cpf}
+                            name='cpf'
                             onChange={(e) => {onClientChange(
                                 editingClient.id, 
                                 editingClient.name,
@@ -193,6 +218,7 @@ export function ClientList() {
                         <input 
                             placeholder="telefone"
                             value={editingClient.phone}
+                            name='phone'
                             onChange={(e) => {onClientChange(
                                 editingClient.id, 
                                 editingClient.name,                                
@@ -206,6 +232,7 @@ export function ClientList() {
                         <input 
                             placeholder="data de nascimento"
                             value={editingClient.birthday}
+                            name='birthday'
                             onChange={(e) => {onClientChange(
                                 editingClient.id, 
                                 editingClient.name, 

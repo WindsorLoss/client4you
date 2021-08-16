@@ -15,3 +15,10 @@ export function deleteClient(itemId){
 
     client.items.destroy(itemId)
 }
+
+export function updateClient(id, data) {
+    client.items.update(id, {
+        ...data
+    })
+    .then(item => console.log(item))
+}
