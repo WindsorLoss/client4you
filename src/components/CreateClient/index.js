@@ -12,7 +12,7 @@ export function CreateClient() {
     
     const [isAllFilled, setIsAllFilled] = useState(true)
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault()
 
         if(name === '' || cpf === '' || phone === '' || birthday === '') {
@@ -29,7 +29,7 @@ export function CreateClient() {
                 birthday
             }
     
-            newClient(data)
+            await newClient(data)
     
             setName('')
             setCpf('')
