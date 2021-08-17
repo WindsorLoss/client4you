@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Container } from './styles'
 import { FiSearch, FiTrash2 } from "react-icons/fi";
 import { FaRegEdit } from "react-icons/fa";
+import InputMask from 'react-input-mask'
 
 import { deleteClient, updateClient } from '../../api/api'
 
@@ -32,10 +33,10 @@ export function ClientList() {
         console.log(result)
     }
 
-    function handleDeleteClient(id) {
+    async function handleDeleteClient(id) {
         setClientList(clientList.filter(client => client.id !== id))
         setSearchResult(searchResult.filter(client => client.id !== id))
-        deleteClient(id)
+        await deleteClient(id)
     }
     
     function handleEdit(id) {
@@ -53,7 +54,7 @@ export function ClientList() {
         })
     }
 
-    function handleSubmitUpdate(e) {
+    async function handleSubmitUpdate(e) {
         e.preventDefault()
 
         const formData = new FormData(e.target)
@@ -65,7 +66,7 @@ export function ClientList() {
             birthday: formData.get('birthday')
         }
 
-        updateClient(editingClient.id, data)
+        await updateClient(editingClient.id, data)
 
         setClientList(clientList.map(client => client.id === editingClient.id ? data : client))
         setSearchResult(searchResult.map(client => client.id === editingClient.id ? data : client))
@@ -188,7 +189,7 @@ export function ClientList() {
                     <form onSubmit={handleSubmitUpdate}>
                         <label>Nome</label>
                         <input 
-                            placeholder="nome"
+                            placeholder="Nome"
                             value={editingClient.name}
                             name='name'
                             onChange={(e) => {onClientChange(
@@ -201,7 +202,8 @@ export function ClientList() {
                         />
 
                         <label>CPF</label>
-                        <input 
+                        <InputMask
+                            mask='999.999.999-99' 
                             placeholder="cpf"
                             value={editingClient.cpf}
                             name='cpf'
@@ -215,7 +217,8 @@ export function ClientList() {
                         />
 
                         <label>Telefone</label>
-                        <input 
+                        <InputMask
+                            mask='(99) 99999-9999' 
                             placeholder="telefone"
                             value={editingClient.phone}
                             name='phone'
@@ -229,7 +232,8 @@ export function ClientList() {
                         />
                         
                         <label>Data de nascimento</label>
-                        <input 
+                        <InputMask
+                            mask='99/99/9999' 
                             placeholder="data de nascimento"
                             value={editingClient.birthday}
                             name='birthday'
