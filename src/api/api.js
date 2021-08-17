@@ -9,11 +9,13 @@ export async function newClient(data){
         itemType: '1067019',
         ...data
     })
+    .catch(e => console.log(e))
 }
 
 export function deleteClient(itemId){
 
     client.items.destroy(itemId)
+    .catch(e => console.log(e))
 }
 
 export async function updateClient(id, data) {
@@ -21,4 +23,5 @@ export async function updateClient(id, data) {
     await client.items.update(id, {
         ...data
     })
+    .catch(e => console.log(e))
 }
