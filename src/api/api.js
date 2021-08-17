@@ -16,9 +16,9 @@ export function deleteClient(itemId){
     client.items.destroy(itemId)
 }
 
-export function updateClient(id, data) {
+export async function updateClient(id, data) {
     
-    client.items.update(id, {
+    await client.items.update(id, {
         ...data
     })
 }
