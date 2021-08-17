@@ -58,6 +58,7 @@ export function ClientList() {
         e.preventDefault()
 
         const formData = new FormData(e.target)
+        const id = editingClient.id
 
         const data = {
             name: formData.get('name'),
@@ -66,13 +67,12 @@ export function ClientList() {
             birthday: formData.get('birthday')
         }
 
-        await updateClient(editingClient.id, data)
+        await updateClient(id, data)
 
-        setClientList(clientList.map(client => client.id === editingClient.id ? data : client))
-        setSearchResult(searchResult.map(client => client.id === editingClient.id ? data : client))
+        setClientList(clientList.map(client => client.id === id ? {id, ...data} : client))
+        setSearchResult(searchResult.map(client => client.id === id ? {id, ...data} : client))
 
         setIsModalOpen(false)
-        setEditingClient({})
     }
     
     useEffect(() => {
