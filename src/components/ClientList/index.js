@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react'
+
 import { Container } from './styles'
-import { FiSearch, FiTrash2 } from "react-icons/fi";
-import { FaRegEdit } from "react-icons/fa";
+import { Modal } from '../Modal';
 import InputMask from 'react-input-mask'
 
-import { deleteClient, updateClient } from '../../api/api'
+import { FiSearch, FiTrash2 } from "react-icons/fi";
+import { FaRegEdit } from "react-icons/fa";
 
-import axios from 'axios';
-import { Modal } from '../Modal';
+import { deleteClient, updateClient } from '../../api/api'
+import { clientService } from '../../services/clientService';
+
 
 export function ClientList() {
 
@@ -34,9 +36,12 @@ export function ClientList() {
     }
 
     async function handleDeleteClient(id) {
-        setClientList(clientList.filter(client => client.id !== id))
-        setSearchResult(searchResult.filter(client => client.id !== id))
         await deleteClient(id)
+        
+        const deletedClient = client => client.id !== id
+
+        setClientList(clientList.filter(deletedClient))
+        setSearchResult(searchResult.filter(deletedClient))
     }
     
     function handleEdit(id) {
@@ -67,34 +72,26 @@ export function ClientList() {
             birthday: formData.get('birthday')
         }
 
-        await updateClient(id, data)
-
-        setClientList(clientList.map(client => client.id === id ? {id, ...data} : client))
-        setSearchResult(searchResult.map(client => client.id === id ? {id, ...data} : client))
-
-        setIsModalOpen(false)
+        try {
+            
+            await updateClient( data)
+    
+            const updatedClient = client => client.id === id ? {id, ...data} : client
+    
+            setClientList(clientList.map(updatedClient))
+            setSearchResult(searchResult.map(updatedClient))
+    
+            
+        } catch(e) {
+            alert(`Error: ${e}`)
+        } finally {
+            setIsModalOpen(false)
+        }
+        
     }
     
     useEffect(() => {
-
-        axios.post('https://graphql.datocms.com/', {
-                "query" : `query {
-                    allClients {
-                        id,
-                        name,
-                        cpf,
-                        phone,
-                        birthday
-                    }
-                }`
-            }, {
-                headers: {
-                    'Authorization' : '33286cab3a939389f726a1ac1b78a7',
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                }
-            }
-        ).then(res => {
+        clientService.allClients().then(res => {
             const list = res.data.data.allClients
             setClientList(list)
         })
