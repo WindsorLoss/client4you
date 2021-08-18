@@ -74,7 +74,7 @@ export function ClientList() {
 
         try {
             
-            await updateClient( data)
+            await updateClient(id, data)
     
             const updatedClient = client => client.id === id ? {id, ...data} : client
     
