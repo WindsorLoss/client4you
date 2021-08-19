@@ -18,6 +18,7 @@ export function ClientList() {
     const [searchResult, setSearchResult] = useState([])
 
     const [isModalOpen, setIsModalOpen] = useState(false)
+    const [isSearchEmpty, setIsSearchEmpty] = useState(false)
     const [editingClient, setEditingClient] = useState({})
 
     function handleSearch(text) {
@@ -28,35 +29,32 @@ export function ClientList() {
                     client.birthday.toLowerCase().includes(text)
         })
         
-        result.length === 0 
-        ? console.log('nenhum resultado encontrado') 
-        : setSearchResult(result)
-
-        console.log(result)
+        if(result.length !== 0){
+            setSearchResult(result)
+            setIsSearchEmpty(false)
+        }
+        else setIsSearchEmpty(true)
     }
 
     async function handleDeleteClient(id) {
-        await deleteClient(id)
         
-        const deletedClient = client => client.id !== id
+        try {
 
-        setClientList(clientList.filter(deletedClient))
-        setSearchResult(searchResult.filter(deletedClient))
+            await deleteClient(id)
+
+            const deletedClient = client => client.id !== id
+    
+            setClientList(clientList.filter(deletedClient))
+            setSearchResult(searchResult.filter(deletedClient))
+
+        } catch(e) {
+            alert(`Error: ${e}`)
+        }
     }
     
     function handleEdit(id) {
         setIsModalOpen(true)
-        setEditingClient(clientList.filter(client => client.id === id)[0])
-    }
-
-    function onClientChange(id, name, cpf, phone, birthday){
-        setEditingClient({
-            id,
-            name,
-            cpf,
-            phone,
-            birthday
-        })
+        setEditingClient(clientList.find(client => client.id === id))
     }
 
     async function handleSubmitUpdate(e) {
@@ -106,7 +104,7 @@ export function ClientList() {
                 clientList.length !== 0 
                 ? <div>
 
-                    <h1>Todos os clientes</h1>
+                    <h1 className='title'>Todos os clientes</h1>
 
                     <div className='search-input'>
                         <FiSearch size={'1.6rem'}/>    
@@ -119,63 +117,69 @@ export function ClientList() {
                             }}
                         />
                     </div>
+                    
+                    {
+                        !isSearchEmpty
+                        ? <table>
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>CPF</th>
+                                    <th>Telefone</th>
+                                    <th>Data de nascimento</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+    
+                            <tbody>
+                                {
+                                    searchResult.length === 0 
+                                    ? clientList.map(client => {
+                                        return (
+                                            <tr key={client.id}>
+                                                <td>{client.name}</td>
+                                                <td>{client.cpf}</td>
+                                                <td>{client.phone}</td>
+                                                <td>{client.birthday}</td>
+                                                <td>
+                                                    <button onClick={() => handleEdit(client.id)}>
+                                                        <FaRegEdit size='1.3rem'/>
+                                                    </button>
+                                                    <button onClick={() => handleDeleteClient(client.id)}>
+                                                        <FiTrash2 size='1.3rem'/>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        )
+                                    })
+                                    : searchResult.map(client => {
+                                            return (
+                                                <tr key={client.id}>
+                                                    <td>{client.name}</td>
+                                                    <td>{client.cpf}</td>
+                                                    <td>{client.phone}</td>
+                                                    <td>{client.birthday}</td>
+                                                    <td>
+                                                        <button onClick={() => handleEdit(client.id)}>
+                                                            <FaRegEdit size='1.3rem'/>
+                                                        </button>
+                                                        <button onClick={() => handleDeleteClient(client.id)}>
+                                                            <FiTrash2 size='1.3rem'/>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            )
+                                        })
+                                    }
+                            </tbody>
+                        </table>
+                        : <h1 className='title less-brightness'>Nenhum cliente encontrado</h1>
 
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Nome</th>
-                                <th>CPF</th>
-                                <th>Telefone</th>
-                                <th>Data de nascimento</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            {
-                                searchResult.length === 0 
-                                ? clientList.map(client => {
-                                    return (
-                                        <tr key={client.id}>
-                                            <td>{client.name}</td>
-                                            <td>{client.cpf}</td>
-                                            <td>{client.phone}</td>
-                                            <td>{client.birthday}</td>
-                                            <td>
-                                                <button onClick={() => handleEdit(client.id)}>
-                                                    <FaRegEdit size='1.3rem'/>
-                                                </button>
-                                                <button onClick={() => handleDeleteClient(client.id)}>
-                                                    <FiTrash2 size='1.3rem'/>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    )
-                                })
-                                : searchResult.map(client => {
-                                    return (
-                                        <tr key={client.id}>
-                                            <td>{client.name}</td>
-                                            <td>{client.cpf}</td>
-                                            <td>{client.phone}</td>
-                                            <td>{client.birthday}</td>
-                                            <td>
-                                                <button onClick={() => handleEdit(client.id)}>
-                                                    <FaRegEdit size='1.3rem'/>
-                                                </button>
-                                                <button onClick={() => handleDeleteClient(client.id)}>
-                                                    <FiTrash2 size='1.3rem'/>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    )
-                                })
-                            }
-                        </tbody>
-                    </table>
+                    }
+                
                 </div>
                 
-                : <h1>Nenhum cliente cadastrado</h1>
+                : <h1 className='title'>Nenhum cliente cadastrado</h1>
             }
 
             {
@@ -189,13 +193,9 @@ export function ClientList() {
                             placeholder="Nome"
                             value={editingClient.name}
                             name='name'
-                            onChange={(e) => {onClientChange(
-                                    editingClient.id, 
-                                    e.target.value,
-                                    editingClient.cpf,
-                                    editingClient.phone,
-                                    editingClient.birthday
-                                )}}
+                            onChange={e => setEditingClient(prevState => {
+                                return {...prevState, name: e.target.value}
+                            })}
                         />
 
                         <label>CPF</label>
@@ -204,13 +204,9 @@ export function ClientList() {
                             placeholder="cpf"
                             value={editingClient.cpf}
                             name='cpf'
-                            onChange={(e) => {onClientChange(
-                                editingClient.id, 
-                                editingClient.name,
-                                e.target.value,
-                                editingClient.phone,
-                                editingClient.birthday
-                            )}}
+                            onChange={e => setEditingClient(prevState => {
+                                return {...prevState, cpf: e.target.value}
+                            })}
                         />
 
                         <label>Telefone</label>
@@ -219,13 +215,9 @@ export function ClientList() {
                             placeholder="telefone"
                             value={editingClient.phone}
                             name='phone'
-                            onChange={(e) => {onClientChange(
-                                editingClient.id, 
-                                editingClient.name,                                
-                                editingClient.cpf,
-                                e.target.value,
-                                editingClient.birthday
-                            )}}
+                            onChange={e => setEditingClient(prevState => {
+                                return {...prevState, phone: e.target.value}
+                            })}
                         />
                         
                         <label>Data de nascimento</label>
@@ -234,13 +226,9 @@ export function ClientList() {
                             placeholder="data de nascimento"
                             value={editingClient.birthday}
                             name='birthday'
-                            onChange={(e) => {onClientChange(
-                                editingClient.id, 
-                                editingClient.name, 
-                                editingClient.cpf,
-                                editingClient.phone,
-                                e.target.value,
-                            )}}
+                            onChange={e => setEditingClient(prevState => {
+                                return {...prevState, birthday: e.target.value}
+                            })}
                         />
 
                         <button>Salvar</button>

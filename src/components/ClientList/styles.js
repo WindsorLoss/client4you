@@ -5,11 +5,15 @@ export const Container = styled.div`
 
     margin: 0 auto;
 
-    h1 {
+    .title {
         text-align: center;
         font-size: 2.2rem;
 
         margin-top: 45px;
+    }
+
+    .less-brightness {
+        color: var(--table-header);
     }
 
     .search-input {
@@ -103,7 +107,6 @@ export const Container = styled.div`
         
         height: 100%;
         width: 100%;
-        /* background: red; */
 
         justify-content: center;
         align-items: center;
@@ -115,10 +118,6 @@ export const Container = styled.div`
             font-size: 1.3rem;
 
             margin-top: 10px;
-
-            /* & + input {
-                margin-bottom: 10px;
-            } */
         }
 
         input {
