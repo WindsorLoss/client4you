@@ -18,7 +18,7 @@ export function CreateClient() {
         e.preventDefault()
 
         if(name === '' || splitData(cpf) !== 11 || splitData(phone) !== 11 || splitData(birthday) !== 8) {
-
+            
             setIsAllFilled(false)
             return alert('Algum campo está vazio ou incompleto. Verifique e tente novamente.')
 
@@ -44,7 +44,7 @@ export function CreateClient() {
     }
 
     function splitData(data) {
-        return data.split("").filter(n => Number(n) || n === 0).join('').length
+        return data.split("").filter(n => Number(n) || n === '0').join('').length
     }
 
     useEffect(() => {
