@@ -24,22 +24,27 @@ export function CreateClient() {
 
         } else {
 
-            const data = {
-                name,
-                cpf,
-                phone,
-                birthday
+            try {
+
+                const data = {
+                    name,
+                    cpf,
+                    phone,
+                    birthday
+                }
+                
+                setIsDisabled(true)
+                await newClient(data)
+                setIsDisabled(false)
+        
+                setName('')
+                setCpf('')
+                setPhone('')
+                setBirthday('')
+
+            } catch(e) {
+                alert(`Error: ${e}`)
             }
-            
-            setIsDisabled(true)
-            await newClient(data)
-            setIsDisabled(false)
-    
-            setName('')
-            setCpf('')
-            setPhone('')
-            setBirthday('')
-            setIsAllFilled(true)
         }
     }
 
