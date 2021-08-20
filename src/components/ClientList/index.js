@@ -48,7 +48,8 @@ export function ClientList() {
             setSearchResult(searchResult.filter(deletedClient))
 
         } catch(e) {
-            alert(`Error: ${e}`)
+            alert(`Falha ao deletar cliente. Por favor tente novamente mais tarde ou entre em contato com o Nino Lindão :D
+            \nError: ${e}`)
         }
     }
     
@@ -81,7 +82,8 @@ export function ClientList() {
     
             
         } catch(e) {
-            alert(`Error: ${e}`)
+            alert(`Falha ao atualizar cliente. Por favor tente novamente mais tarde ou entre em contato com o Nino Lindão :D
+            \nError: ${e}`)
         } finally {
             setIsModalOpen(false)
         }
@@ -95,7 +97,12 @@ export function ClientList() {
         })
     }, [])
 
-    useEffect(() => searchWord === '' && setSearchResult([]), [searchWord])
+    useEffect(() => {
+        if(searchWord === '') {
+            setSearchResult([])
+            setIsSearchEmpty(false)
+        }
+    }, [searchWord])
 
     return (
         <Container>

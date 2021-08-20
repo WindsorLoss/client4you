@@ -43,7 +43,8 @@ export function CreateClient() {
                 setBirthday('')
 
             } catch(e) {
-                alert(`Error: ${e}`)
+                alert(`Falha ao criar cliente. Por favor tente novamente mais tarde ou entre em contato com o Nino Lindão :D
+            \nError: ${e}`)
             }
         }
     }
