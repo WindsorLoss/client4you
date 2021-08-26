@@ -62,7 +62,7 @@ export function ClientList() {
         e.preventDefault()
 
         const formData = new FormData(e.target)
-        const id = editingClient.id
+        const { id } = editingClient
 
         const data = {
             name: formData.get('name'),
