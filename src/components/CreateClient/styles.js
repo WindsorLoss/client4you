@@ -20,7 +20,7 @@ export const Container = styled.div`
         padding: 15px 20px;
 
         margin: 0 auto;
-        margin-top: 70px;
+        margin-top: 4.375rem;
 
         border-radius: 15px;
 
@@ -115,4 +115,5 @@ export const Container = styled.div`
             }
         }
     }
+
 `
