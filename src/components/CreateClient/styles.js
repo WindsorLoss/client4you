@@ -68,7 +68,7 @@ export const Container = styled.div`
             margin: 0 auto;
             margin-top: 20px;
 
-            width: 250px;
+            width: 15.625rem;
 
             transition: transform 0.1s;
 
@@ -103,6 +103,16 @@ export const Container = styled.div`
         input {
             border-radius: 15px 15px 0 0;
             border-bottom: 1px solid red
+        }
+    }
+
+    @media (max-width: 860px) {
+        .form-rest {
+            flex-direction: column;
+
+            label + input {
+                margin-bottom: 15px;
+            }
         }
     }
 `
