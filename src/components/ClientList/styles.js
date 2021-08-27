@@ -51,7 +51,6 @@ export const Container = styled.div`
 
         margin-top: 20px;
 
-
         th {
             color: var(--table-header);
             font-size: 1.2rem;
@@ -160,6 +159,64 @@ export const Container = styled.div`
 
             &:active {
                 transform: translateY(4px);
+            }
+        }
+    }
+
+    @media (max-width: 860px) {
+
+        .table-header {
+            display: none;
+        }
+
+        table {
+            width: 100%;
+
+            margin-top: 20px;
+            padding: 0;
+            
+            td {   
+                
+                display: flex;
+
+                font-size: 1.3rem;
+
+                &:first-child {
+                    border-radius: 15px 15px 0 0;
+                }
+    
+                &:last-child {
+                    border-radius: 0 0 15px 15px;
+                    margin-bottom: 10px;
+
+                    justify-content: center;
+                }
+
+            }
+            
+            button {
+                background: var(--navbar);
+                color: white;
+                width: 100%;
+                padding: 0.5rem 0;
+
+                border-radius: 15px;
+            }
+            
+        }
+
+        thead, tbody, th, td, tr {
+            display: block;
+        }
+
+        form {
+
+            label {
+                font-size: 1.4rem;
+            }
+
+            input{
+                font-size: 1.2rem;
             }
         }
     }

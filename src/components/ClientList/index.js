@@ -128,7 +128,7 @@ export function ClientList() {
                     {
                         !isSearchEmpty
                         ? <table>
-                            <thead>
+                            <thead className='table-header'>
                                 <tr>
                                     <th>Nome</th>
                                     <th>CPF</th>

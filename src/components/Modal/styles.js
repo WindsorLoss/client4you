@@ -23,7 +23,7 @@ export const ModalBox = styled.div`
         align-items: center;
 
         width: 380px;
-        height: 65%;
+        height: 443px;
 
         background: var(--shape-color);
 
@@ -93,13 +93,13 @@ export const ModalBox = styled.div`
     }
 
     @media (max-width: 860px) {
-        /* .container {
+        .container {
             width: 280px;
-            height: 180px;
+            height: 360px;
         }
 
         .content {
             font-size: 3rem;
-        } */
+        }
     }
 `
