@@ -95,7 +95,7 @@ export const ModalBox = styled.div`
     @media (max-width: 860px) {
         .container {
             width: 280px;
-            height: 360px;
+            padding: 1rem 0;
         }
 
         .content {
