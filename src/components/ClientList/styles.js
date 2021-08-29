@@ -167,6 +167,38 @@ export const Container = styled.div`
         }
     }
 
+    .deleting-modal-title {
+        font-size: 1.3rem;
+        padding: 1rem 0;
+    }
+    
+    .deleting-modal-button {
+        padding: 0.5rem 0.8rem;
+
+        font-size: 1.3rem;
+
+        border: 0;
+        border-radius: 15px;
+
+        color: white;
+        background: var(--navbar);
+
+        transition: all 0.2s;
+
+        &:hover {
+            background: var(--button-hover)
+        }
+
+        &:active {
+            transform: translateY(4px);
+        }
+
+        & + button {
+            margin-left: 5px;
+        }
+    
+    }
+
     @media (max-width: 860px) {
 
         .table-header {

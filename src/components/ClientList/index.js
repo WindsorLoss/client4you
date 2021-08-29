@@ -17,9 +17,11 @@ export function ClientList() {
     const [searchWord, setSearchWord] = useState('')
     const [searchResult, setSearchResult] = useState([])
 
-    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+    const [isDeleteButtonDisabled, setIsDeleteButtonDisabled] = useState(false)
     const [isSearchEmpty, setIsSearchEmpty] = useState(false)
-    const [editingClient, setEditingClient] = useState({})
+    const [tempClient, setTempClient] = useState({})
 
     function handleSearch(text) {
         const result = clientList.filter(client => {
@@ -39,7 +41,8 @@ export function ClientList() {
     async function handleDeleteClient(id) {
         
         try {
-
+            setIsDeleteButtonDisabled(true)
+            
             await deleteClient(id)
 
             const deletedClient = client => client.id !== id
@@ -50,19 +53,27 @@ export function ClientList() {
         } catch(e) {
             alert(`Falha ao deletar cliente. Por favor tente novamente mais tarde ou entre em contato com o Nino Lindão :D
             \nError: ${e}`)
+        } finally {
+            setIsDeleteModalOpen(false)
+            setIsDeleteButtonDisabled(false)
         }
     }
     
     function handleEdit(id) {
-        setIsModalOpen(true)
-        setEditingClient(clientList.find(client => client.id === id))
+        setIsEditModalOpen(true)
+        setTempClient(clientList.find(client => client.id === id))
+    }
+
+    function handleDelete(id) {
+        setIsDeleteModalOpen(true)
+        setTempClient(clientList.find(client => client.id === id))
     }
 
     async function handleSubmitUpdate(e) {
         e.preventDefault()
 
         const formData = new FormData(e.target)
-        const { id } = editingClient
+        const { id } = tempClient
 
         const data = {
             name: formData.get('name'),
@@ -85,7 +96,7 @@ export function ClientList() {
             alert(`Falha ao atualizar cliente. Por favor tente novamente mais tarde ou entre em contato com o Nino Lindão :D
             \nError: ${e}`)
         } finally {
-            setIsModalOpen(false)
+            setIsEditModalOpen(false)
         }
         
     }
@@ -152,7 +163,7 @@ export function ClientList() {
                                                     <button onClick={() => handleEdit(client.id)}>
                                                         <FaRegEdit size='1.3rem'/>
                                                     </button>
-                                                    <button onClick={() => handleDeleteClient(client.id)}>
+                                                    <button onClick={() => handleDelete(client.id)}>
                                                         <FiTrash2 size='1.3rem'/>
                                                     </button>
                                                 </td>
@@ -170,7 +181,7 @@ export function ClientList() {
                                                         <button onClick={() => handleEdit(client.id)}>
                                                             <FaRegEdit size='1.3rem'/>
                                                         </button>
-                                                        <button onClick={() => handleDeleteClient(client.id)}>
+                                                        <button onClick={() => handleDelete(client.id)}>
                                                             <FiTrash2 size='1.3rem'/>
                                                         </button>
                                                     </td>
@@ -190,17 +201,18 @@ export function ClientList() {
             }
 
             {
-                isModalOpen && 
+                isEditModalOpen && 
                 <Modal 
-                    onClose={() => setIsModalOpen(false)}
+                    onClose={() => setIsEditModalOpen(false)}
+                    className='editing-modal'
                 >
                     <form onSubmit={handleSubmitUpdate}>
                         <label>Nome</label>
                         <input 
                             placeholder="Nome"
-                            value={editingClient.name}
+                            value={tempClient.name}
                             name='name'
-                            onChange={e => setEditingClient(prevState => {
+                            onChange={e => setTempClient(prevState => {
                                 return {...prevState, name: e.target.value}
                             })}
                         />
@@ -209,9 +221,9 @@ export function ClientList() {
                         <InputMask
                             mask='999.999.999-99' 
                             placeholder="cpf"
-                            value={editingClient.cpf}
+                            value={tempClient.cpf}
                             name='cpf'
-                            onChange={e => setEditingClient(prevState => {
+                            onChange={e => setTempClient(prevState => {
                                 return {...prevState, cpf: e.target.value}
                             })}
                         />
@@ -220,9 +232,9 @@ export function ClientList() {
                         <InputMask
                             mask='(99) 99999-9999' 
                             placeholder="telefone"
-                            value={editingClient.phone}
+                            value={tempClient.phone}
                             name='phone'
-                            onChange={e => setEditingClient(prevState => {
+                            onChange={e => setTempClient(prevState => {
                                 return {...prevState, phone: e.target.value}
                             })}
                         />
@@ -231,15 +243,39 @@ export function ClientList() {
                         <InputMask
                             mask='99/99/9999' 
                             placeholder="data de nascimento"
-                            value={editingClient.birthday}
+                            value={tempClient.birthday}
                             name='birthday'
-                            onChange={e => setEditingClient(prevState => {
+                            onChange={e => setTempClient(prevState => {
                                 return {...prevState, birthday: e.target.value}
                             })}
                         />
 
                         <button>Salvar</button>
                     </form>
+                </Modal>
+            }
+
+            {
+                isDeleteModalOpen &&
+                <Modal
+                    onClose={() => setIsDeleteModalOpen(false)}
+                >
+                    <h1 className='deleting-modal-title'>Tem certeza que deseja apagar este cliente?</h1>
+
+                    <button
+                        onClick={() => handleDeleteClient(tempClient.id)}
+                        className='deleting-modal-button'
+                        disabled={isDeleteButtonDisabled}
+                    >
+                        Sim
+                    </button>
+
+                    <button 
+                        onClick={() => setIsDeleteModalOpen(false)}
+                        className='deleting-modal-button'
+                    >
+                        Não
+                    </button>
                 </Modal>
             }
 

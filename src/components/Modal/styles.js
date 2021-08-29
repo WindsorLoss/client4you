@@ -16,14 +16,14 @@ export const ModalBox = styled.div`
 
     background: rgba(0, 0, 0, 0.5);
 
-    .container {
+    .container  {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
 
         width: 380px;
-        height: 443px;
+        padding: 1rem 0;
 
         background: var(--shape-color);
 
