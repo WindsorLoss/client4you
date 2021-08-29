@@ -144,10 +144,10 @@ export function ClientList() {
                                     ? clientList.map(client => {
                                         return (
                                             <tr key={client.id}>
-                                                <td>{client.name}</td>
-                                                <td>{client.cpf}</td>
-                                                <td>{client.phone}</td>
-                                                <td>{client.birthday}</td>
+                                                <td><span className='category'>Nome:</span>{client.name}</td>
+                                                <td><span className='category'>CPF:</span>{client.cpf}</td>
+                                                <td><span className='category'>Telefone:</span>{client.phone}</td>
+                                                <td><span className='category'>Data de nascimento:</span>{client.birthday}</td>
                                                 <td>
                                                     <button onClick={() => handleEdit(client.id)}>
                                                         <FaRegEdit size='1.3rem'/>
@@ -162,10 +162,10 @@ export function ClientList() {
                                     : searchResult.map(client => {
                                             return (
                                                 <tr key={client.id}>
-                                                    <td>{client.name}</td>
-                                                    <td>{client.cpf}</td>
-                                                    <td>{client.phone}</td>
-                                                    <td>{client.birthday}</td>
+                                                    <td><span className='category'>Nome:</span>{client.name}</td>
+                                                    <td><span className='category'>CPF:</span>{client.cpf}</td>
+                                                    <td><span className='category'>Telefone:</span>{client.phone}</td>
+                                                    <td><span className='category'>Data de nascimento:</span>{client.birthday}</td>
                                                     <td>
                                                         <button onClick={() => handleEdit(client.id)}>
                                                             <FaRegEdit size='1.3rem'/>

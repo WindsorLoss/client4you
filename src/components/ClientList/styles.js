@@ -66,6 +66,10 @@ export const Container = styled.div`
             font-size: 1.1rem;
 
             padding: 1rem 1rem 1.3rem 1rem;
+
+            span{
+                display: none;
+            }
             
 
             &:first-child {
@@ -190,6 +194,12 @@ export const Container = styled.div`
                     margin-bottom: 10px;
 
                     justify-content: center;
+                }
+
+                span{
+                    display: unset;
+                    margin-right: 5px;
+                    color: var(--table-header);
                 }
 
             }
