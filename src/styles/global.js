@@ -17,6 +17,10 @@ export const GlobalStyle = createGlobalStyle`
         :root {
             font-size: 12px;
         }
+
+        body {
+            overflow-x: hidden;
+        }
     }
 
     * {
